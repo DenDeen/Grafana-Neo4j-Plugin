@@ -3,13 +3,14 @@ from flask import Flask, render_template
 from py2neo import Graph
 import pandas as pd
 import json
+import os
 app = Flask(__name__)
 
-DN_HOST = 'localhost'
-DB_PORT = 7687
-DB_USERNAME = 'neo4j'
-DB_PW = 'test'
-DB_NAME = 'powerplant'
+DN_HOST = os.environ['MY_HOST']
+DB_PORT = os.environ['MY_PORT']
+DB_USERNAME = os.environ['MY_USERNAME']
+DB_PW = os.environ['MY_PASSWORD']
+DB_NAME = os.environ['DATABASE_NAME']
 
 graph = Graph(
 host=DN_HOST,
