@@ -1,8 +1,23 @@
 
 from flask import Flask, render_template
+from py2neo import Graph
+import pandas as pd
 import json
-import requests
 app = Flask(__name__)
+
+DN_HOST = 'localhost'
+DB_PORT = 7687
+DB_USERNAME = 'neo4j'
+DB_PW = 'test'
+DB_NAME = 'powerplant'
+
+graph = Graph(
+host=DN_HOST,
+port=DB_PORT,
+user=DB_USERNAME,
+password=DB_PW,
+name=DB_NAME
+)
 
 @app.route('/')
 def index():
@@ -10,127 +25,32 @@ def index():
 
 @app.route('/nodes')
 def nodes_without_label():
-  URL = "http://localhost:7474/db/neo4j/tx"
-
-  data = {
-    "statements": [
-        {
-            "statement": "MATCH (n) RETURN n"
-        }
-    ]
-  }
-
-  r = requests.post(url = URL, auth=('neo4j', 'test'), json=data).json()
-  nodes = []
-  for i in r['results'][0]['data']:
-    item = dict(i['row'][0], **i['meta'][0])
-    item.pop('deleted', None)
-    nodes.append(item)
-
-  return json.dumps(nodes)
+  schema_query = "MATCH (n) RETURN n, id(n) as id"
+  df = graph.run(schema_query).to_data_frame()
+  df = pd.concat([df.drop(['n'], axis=1), df['n'].apply(pd.Series)], axis=1)
+  df = df.loc[:,~df.columns.duplicated()]
+  
+  return json.dumps([row.dropna().to_dict() for index,row in df.iterrows()])
 
 @app.route('/nodes/<label>')
 def nodes_with_label(label):
-  URL = "http://localhost:7474/db/neo4j/tx"
-
-  data = {
-    "statements": [
-        {
-            "statement": "MATCH (n:%s) RETURN n" % label.capitalize()
-        }
-    ]
-  }
-
-  r = requests.post(url = URL, auth=('neo4j', 'test'), json=data).json()
-  nodes = []
-  for i in r['results'][0]['data']:
-    item = dict(i['row'][0], **i['meta'][0])
-    item.pop('deleted', None)
-    item['label'] = label
-    nodes.append(item)
-
-  return json.dumps(nodes)
+  schema_query = "MATCH (n:%s) RETURN n, id(n) as id" % label.capitalize()
+  df = graph.run(schema_query).to_data_frame()
+  df = pd.concat([df.drop(['n'], axis=1), df['n'].apply(pd.Series)], axis=1)
+  df = df.loc[:,~df.columns.duplicated()]
+  
+  return json.dumps([row.dropna().to_dict() for index,row in df.iterrows()])
 
 @app.route('/edges')
 def edges_without_label():
-  URL = "http://localhost:7474/db/neo4j/tx"
+  schema_query = "MATCH (n)-[r]->(m) RETURN type(r) AS mainStat, id(r) as id, id(n) as source, id(m) as target"
+  df = graph.run(schema_query).to_data_frame()
 
-  data = {
-    "statements": [
-        {
-            "statement": "MATCH p=()-->() RETURN p"
-        }
-    ]
-  }
-
-  r = requests.post(url = URL, auth=('neo4j', 'test'), json=data).json()
-  nodes = []
-  for i in r['results'][0]['data']:
-      row = fix_row(i['row'][0])
-      meta = fix_meta(i['meta'][0])
-      item = dict(row, **meta)
-      nodes.append(item)
-
-  return json.dumps(nodes)
+  return json.dumps([row.to_dict() for index,row in df.iterrows()])
 
 @app.route('/edges/<label>')
 def edges_with_label(label):
-  URL = "http://localhost:7474/db/neo4j/tx"
+  schema_query = "MATCH (n)-[r:%s]->(m) RETURN type(r) AS mainStat, id(r) as id, id(n) as source, id(m) as target" % label.upper()
+  df = graph.run(schema_query).to_data_frame()
 
-  data = {
-    "statements": [
-        {
-            "statement": "MATCH p=()-[r:%s]->() RETURN p" % label.upper()
-        }
-    ]
-  }
-
-  r = requests.post(url = URL, auth=('neo4j', 'test'), json=data).json()
-  nodes = []
-  for i in r['results'][0]['data']:
-      row = fix_row(i['row'][0])
-      meta = fix_meta(i['meta'][0])
-      item = dict(row, **meta)
-      item['label'] = label
-      nodes.append(item)
-
-  return json.dumps(nodes)
-
-@app.route('/full')
-def full_without_label():
-  URL = "http://localhost:7474/db/neo4j/tx"
-
-  data = {
-    "statements": [
-        {
-            "statement": "MATCH (n)-[r]->(m) RETURN n,r,m"
-        }
-    ]
-  }
-
-  r = requests.post(url = URL, auth=('neo4j', 'test'), json=data).json()
-  nodes = []
-  for i in r['results'][0]['data']:
-      node1 = dict(i['row'][0], **i['meta'][0])
-      node2 = dict(i['row'][2], **i['meta'][2])
-      relation = dict(i['row'][1], **fix_meta(i['meta']))
-      nodes.append(node1)
-      nodes.append(relation)
-      nodes.append(node2)
-
-  return json.dumps(nodes)
-
-def fix_meta(meta):
-    meta[0].pop('deleted', None)
-    meta[1].pop('deleted', None)
-    meta[2].pop('deleted', None)
-    meta[0].pop('type', None)
-    meta[2].pop('type', None)
-    meta[0]['source'] =  meta[0].pop('id')
-    meta[2]['target'] =  meta[2].pop('id')
-    items = dict(meta[0], **meta[1], **meta[2])
-    return items
-
-def fix_row(row):
-    items = dict(row[0], **row[1], **row[2])
-    return items
+  return json.dumps([row.to_dict() for index,row in df.iterrows()])
