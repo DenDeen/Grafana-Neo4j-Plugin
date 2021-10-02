@@ -1,6 +1,6 @@
 # HumAIn
 
-TODO: 
+Step by step: 
 1. Pull from github
 2. Insert variables in docker-compose file (e.g. port, password and username)
 3. CLI cd to root directory
