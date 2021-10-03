@@ -37,8 +37,7 @@ def nodes_without_label():
     df = graph.run(schema_query).to_data_frame()
     df = pd.concat([df.drop(['n'], axis=1), df['n'].apply(pd.Series)], axis=1)
     df = df.loc[:, ~df.columns.duplicated()]
-
-    return json.dumps([row.dropna().to_dict() for index, row in df.iterrows()])
+    return json.dumps([row.dropna().to_dict() for i, row in df.iterrows()])
 
 
 @app.route('/nodes/<label>')
@@ -47,8 +46,7 @@ def nodes_with_label(label):
     df = graph.run(schema_query).to_data_frame()
     df = pd.concat([df.drop(['n'], axis=1), df['n'].apply(pd.Series)], axis=1)
     df = df.loc[:, ~df.columns.duplicated()]
-
-    return json.dumps([row.dropna().to_dict() for index, row in df.iterrows()])
+    return json.dumps([row.dropna().to_dict() for i, row in df.iterrows()])
 
 
 @app.route('/edges')
@@ -58,7 +56,7 @@ def edges_without_label():
     RETURN type(r) AS mainStat, id(r) as id, id(n) as source, id(m) as target
   """
     df = graph.run(schema_query).to_data_frame()
-    return json.dumps([row.to_dict() for index, row in df.iterrows()])
+    return json.dumps([row.to_dict() for i, row in df.iterrows()])
 
 
 @app.route('/edges/<label>')
@@ -68,8 +66,7 @@ def edges_with_label(label):
       RETURN type(r) AS mainStat, id(r) as id, id(n) as source, id(m) as target
     """
     df = graph.run(schema_query).to_data_frame()
-
-    return json.dumps([row.to_dict() for index, row in df.iterrows()])
+    return json.dumps([row.to_dict() for i, row in df.iterrows()])
 
 
 if __name__ == "__main__":
