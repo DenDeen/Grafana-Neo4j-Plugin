@@ -11,6 +11,7 @@ DB_USERNAME = os.environ['MY_USERNAME']
 DB_PW = os.environ['MY_PASSWORD']
 DB_NAME = os.environ['DATABASE_NAME']
 
+
 graph = Graph(
   host=DN_HOST,
   port=DB_PORT,
