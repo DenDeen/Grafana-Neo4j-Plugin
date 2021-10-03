@@ -1,0 +1,80 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="56" name="Python" />
+      </Languages>
+    </inspection_tool>
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="28">
+            <item index="0" class="java.lang.String" itemvalue="json2html" />
+            <item index="1" class="java.lang.String" itemvalue="tensorflow" />
+            <item index="2" class="java.lang.String" itemvalue="Flask-session" />
+            <item index="3" class="java.lang.String" itemvalue="pytextrank" />
+            <item index="4" class="java.lang.String" itemvalue="ibm-watson" />
+            <item index="5" class="java.lang.String" itemvalue="en-core-web-sm" />
+            <item index="6" class="java.lang.String" itemvalue="ibm-cloud-sdk-core" />
+            <item index="7" class="java.lang.String" itemvalue="tensorflow_hub" />
+            <item index="8" class="java.lang.String" itemvalue="scikit-multilearn" />
+            <item index="9" class="java.lang.String" itemvalue="six" />
+            <item index="10" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="11" class="java.lang.String" itemvalue="wrapt" />
+            <item index="12" class="java.lang.String" itemvalue="astroid" />
+            <item index="13" class="java.lang.String" itemvalue="numpy" />
+            <item index="14" class="java.lang.String" itemvalue="toml" />
+            <item index="15" class="java.lang.String" itemvalue="pandas" />
+            <item index="16" class="java.lang.String" itemvalue="lazy-object-proxy" />
+            <item index="17" class="java.lang.String" itemvalue="colorama" />
+            <item index="18" class="java.lang.String" itemvalue="mccabe" />
+            <item index="19" class="java.lang.String" itemvalue="pylint" />
+            <item index="20" class="java.lang.String" itemvalue="paho-mqtt" />
+            <item index="21" class="java.lang.String" itemvalue="isort" />
+            <item index="22" class="java.lang.String" itemvalue="pytz" />
+            <item index="23" class="java.lang.String" itemvalue="Flask-Cors" />
+            <item index="24" class="java.lang.String" itemvalue="pip" />
+            <item index="25" class="java.lang.String" itemvalue="requests" />
+            <item index="26" class="java.lang.String" itemvalue="flask" />
+            <item index="27" class="java.lang.String" itemvalue="influxdb" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E305" />
+          <option value="E741" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N813" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyTypeCheckerInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="streamlit.dataframe" />
+          <option value="streamlit.header" />
+          <option value="streamlit.title" />
+          <option value="streamlit.write" />
+          <option value="src.streamlit.title" />
+          <option value="src.streamlit.header" />
+          <option value="src.streamlit.dataframe" />
+          <option value="streamlit.altair_chart" />
+          <option value="streamlit.selectbox" />
+          <option value="streamlit.subheader" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="SqlNoDataSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>
