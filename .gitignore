@@ -1,2 +1,4 @@
 /sandbox/venv/
 .idea
+.DS_Store
+/sandbox/.DS_Store
