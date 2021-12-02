@@ -44,7 +44,7 @@ def mqtt_message_looper_test1():
             MQTT_MSG = json.dumps(json.dumps(parsed, indent=4))
 
             # Publish message to MQTT Broker    
-            p.single(MQTT_TOPIC,MQTT_MSG, port=MQTT_PORT)
+            p.single("Humain/Articles",MQTT_MSG, port=MQTT_PORT)
             print("Artikel met id: " + id + " verzonden.")   
 
 def mqtt_message_looper_test2():
